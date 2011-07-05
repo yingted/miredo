@@ -4,7 +4,7 @@ dnl based on earlier configure.ac from tcpreen by the same author
 dnl Process this file with GNU Autoconf to produce a configure script
 
 dnl ***********************************************************************
-dnl *  Copyright © 2004-2009 Rémi Denis-Courmont.                         *
+dnl *  Copyright © 2004-2011 Rémi Denis-Courmont.                         *
 dnl *  This program is free software; you can redistribute and/or modify  *
 dnl *  it under the terms of the GNU General Public License as published  *
 dnl *  by the Free Software Foundation; version 2 of the license, or (at  *
@@ -20,8 +20,8 @@ dnl *  along with this program; if not, you can get it from:              *
 dnl *  http://www.gnu.org/copyleft/gpl.html                               *
 dnl ***********************************************************************
 
-AC_COPYRIGHT([Copyright (C) 2004-2010 Remi Denis-Courmont])
-AC_INIT(miredo, 1.2.3, miredo-devel_no_bulk_mail@remlab.net)
+AC_COPYRIGHT([Copyright (C) 2004-2011 Remi Denis-Courmont])
+AC_INIT(miredo, 1.2.4, miredo-devel_no_bulk_mail@remlab.net)
 AC_PREREQ(2.59c)
 INVOCATION="$0 $ac_configure_args"
 
@@ -49,13 +49,13 @@ dnl Work-around for libtool bug (from Darren Salt)
 LT_PREREQ([2.2.0])
 LT_INIT
 AM_INIT_AUTOMAKE
-m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+AM_SILENT_RULES([yes])
 
 
 # Checks for libraries.
 AS_MESSAGE([checking required libraries...])
 AM_BINRELOC
-AM_GNU_GETTEXT_VERSION([0.16.1])
+AM_GNU_GETTEXT_VERSION([0.18.1])
 AM_GNU_GETTEXT([external])
 
 LIBRT=""
@@ -163,10 +163,9 @@ AC_SUBST(LIBCAP)
 # Judy
 AC_ARG_WITH(Judy,
 	    [AS_HELP_STRING(--with-Judy,
-	    		    [use Judy dynamic arrays (default enabled)])],,
-	    [with_Judy=yes])
+			    [use Judy dynamic arrays (default auto)])])
 LIBJUDY=""
-AS_IF([test "${with_Judy}" != "no"], [
+AS_IF([test "x${with_Judy}" != "xno"], [
 	AC_CHECK_HEADERS([Judy.h], [
 		AC_CHECK_LIB(Judy, JudyHSIns, [
 			LIBJUDY="-lJudy"
@@ -175,10 +174,15 @@ AS_IF([test "${with_Judy}" != "no"], [
 		])
 	])
 	AS_IF([test "x${LIBJUDY}" = "x"], [
-		AC_MSG_WARN([If you don't care about scalability, re-run configure with '--without-Judy'.])
-		AC_MSG_ERROR([Required Judy dynamic arrays library missing.])
+		AS_IF([test "x${with_Judy}" != "x"], [
+			AC_MSG_ERROR([Judy dynamic arrays library missing.])
+		])
 	])
-
+])
+AS_IF([test "x${LIBJUDY}" = "x"], [
+	AC_CHECK_FUNC([tdestroy],, [
+		AC_MSG_ERROR([Required tdestroy() or Judy dynamic arrays.])
+	])
 ])
 AC_SUBST(LIBJUDY)
 

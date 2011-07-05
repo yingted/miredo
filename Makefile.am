@@ -18,7 +18,7 @@
 # ***********************************************************************
 
 ACLOCAL_AMFLAGS = -I m4
-AUTOMAKE_OPTIONS = \
+AUTOMAKE_OPTIONS = 1.11 \
 	-Wall \
 	check-news \
 	std-options \
@@ -29,7 +29,7 @@ AUTOMAKE_OPTIONS = \
 SUBDIRS = po doc misc compat libteredo libtun6 src
 DIST_SUBDIRS = m4 $(SUBDIRS)
 noinst_HEADERS = include/gettext.h
-EXTRA_DIST = autogen.sh autopackage/default.apspec.in Doxyfile.in
+EXTRA_DIST = autogen.sh Doxyfile.in
 
 doc: Doxyfile
 	doxygen $<

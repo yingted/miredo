@@ -3,7 +3,7 @@
  */
 
 /***********************************************************************
- *  Copyright © 2004-2006 Rémi Denis-Courmont.                         *
+ *  Copyright © 2004-2011 Rémi Denis-Courmont.                         *
  *  This program is free software; you can redistribute and/or modify  *
  *  it under the terms of the GNU General Public License as published  *
  *  by the Free Software Foundation; version 2 of the license, or (at  *
@@ -41,6 +41,8 @@
 #endif
 #ifdef HAVE_JUDY_H
 # include <Judy.h>
+#else
+# include <search.h>
 #endif
 
 #include "teredo.h"
@@ -156,9 +158,9 @@ void teredo_queue_emit (teredo_queue *q, int fd, uint32_t ipv4, uint16_t port,
 /*** Peer list handling ***/
 typedef struct teredo_listitem
 {
+	union teredo_addr key; /* must be first (for listitem_cmp()) */
 	struct teredo_listitem **pprev, *next;
 	teredo_peer peer;
-	union teredo_addr key;
 } teredo_listitem;
 
 struct teredo_peerlist
@@ -170,6 +172,8 @@ struct teredo_peerlist
 	pthread_mutex_t lock;
 #ifdef HAVE_LIBJUDY
 	Pvoid_t PJHSArray;
+#else
+        void *root;
 #endif
 };
 
@@ -200,6 +204,19 @@ static void listitem_recdestroy (teredo_listitem *entry)
 	}
 }
 
+#ifndef HAVE_LIBJUDY
+static void listitem_free (void *p)
+{
+	(void) p;
+}
+
+static int listitem_cmp (const void *pa, const void *pb)
+{
+	const struct in6_addr *const *a = pa, *const *b = pb;
+
+	return memcmp (a, b, sizeof (**a));
+}
+#endif
 
 #include <sched.h>
 
@@ -227,8 +244,14 @@ static LIBTEREDO_NORETURN void *garbage_collector (void *data)
 		{
 #ifdef HAVE_LIBJUDY
 			int Rc_int;
+
 			JHSD (Rc_int, l->PJHSArray, (uint8_t *)&p->key, 16);
 			assert (Rc_int);
+#else
+                        teredo_listitem **pp;
+
+                        pp = tdelete (&p->key.ip6, &l->root, listitem_cmp);
+                        assert (pp != NULL);
 #endif
 			l->left++;
 		}
@@ -272,6 +295,8 @@ teredo_peerlist *teredo_list_create (unsigned max, unsigned expiration)
 	l->expiration = expiration;
 #ifdef HAVE_LIBJUDY
 	l->PJHSArray = (Pvoid_t)NULL;
+#else
+	l->root = NULL;
 #endif
 
 	if (pthread_create (&l->gc, NULL, garbage_collector, l))
@@ -293,6 +318,9 @@ void teredo_list_reset (teredo_peerlist *l, unsigned max)
 	// detach old array
 	Pvoid_t array = l->PJHSArray;
 	l->PJHSArray = (Pvoid_t)NULL;
+#else
+	void *root = l->root;
+	l->root = NULL;
 #endif
 
 	teredo_listitem *recent = l->recent, *old = l->old;
@@ -310,6 +338,8 @@ void teredo_list_reset (teredo_peerlist *l, unsigned max)
 	// destroy the old array that was detached before unlocking
 	intptr_t Rc_word;
 	JHSFA (Rc_word, array);
+#else
+	tdestroy (root, listitem_free);
 #endif
 }
 
@@ -345,10 +375,7 @@ teredo_peer *teredo_list_lookup (teredo_peerlist *restrict list,
 		{
 			JHSI (PValue, list->PJHSArray, (uint8_t *)addr, 16);
 			if (PValue == PJERR)
-			{
-				pthread_mutex_unlock (&list->lock);
-				return NULL;
-			}
+				goto error; /* out of memory */
 			pp = (teredo_listitem **)PValue;
 			p = *pp;
 		}
@@ -361,17 +388,20 @@ teredo_peer *teredo_list_lookup (teredo_peerlist *restrict list,
 
 	}
 #else
-	/* Slow O(n) simplistic peer lookup */
-	p = NULL;
+	void **pp;
 
-	for (p = list->recent; p != NULL; p = p->next)
-		if (IN6_ARE_ADDR_EQUAL (&p->key.ip6, addr))
-			break;
-
-	if (p == NULL)
-		for (p = list->old; p != NULL; p = p->next)
-			if (IN6_ARE_ADDR_EQUAL (&p->key.ip6, addr))
-				break;
+	if (create != NULL)
+	{
+		pp = tsearch (addr, &list->root, listitem_cmp);
+		if (pp == NULL)
+			goto error; /* out of memory */
+		p = (*pp != addr) ? *pp : NULL;
+	}
+	else
+	{
+		pp = tfind (addr, &list->root, listitem_cmp);
+		p = (pp != NULL) ? *pp : NULL;
+	}
 #endif
 
 	if (p != NULL)
@@ -406,15 +436,10 @@ teredo_peer *teredo_list_lookup (teredo_peerlist *restrict list,
 		return &p->peer;
 	}
 
-	assert (p == NULL);
-
 	/* otherwise, peer was not in list */
+	assert (p == NULL);
 	if (create == NULL)
-	{
-		pthread_mutex_unlock (&list->lock);
-		return NULL;
-	}
-
+		goto error; /* not found and not created */
 	*create = true;
 
 	/* Allocates a new peer entry */
@@ -426,9 +451,10 @@ teredo_peer *teredo_list_lookup (teredo_peerlist *restrict list,
 #ifdef HAVE_LIBJUDY
 		int Rc_int;
 		JHSD (Rc_int, list->PJHSArray, (uint8_t *)addr, sizeof (*addr));
+#else
+		tdelete (addr, &list->root, listitem_cmp);
 #endif
-		pthread_mutex_unlock (&list->lock);
-		return NULL;
+		goto error; /* out of memory */
 	}
 
 	/* Puts new entry at the head of the list */
@@ -445,11 +471,13 @@ teredo_peer *teredo_list_lookup (teredo_peerlist *restrict list,
 	assert (*(p->pprev) == p);
 	assert ((p->next == NULL) || (p->next->pprev == &p->next));
 
-#ifdef HAVE_LIBJUDY
 	*pp = p;
-#endif
 	p->key.ip6 = *addr;
 	return &p->peer;
+
+error:
+	pthread_mutex_unlock (&list->lock);
+	return NULL;
 }
 
 
