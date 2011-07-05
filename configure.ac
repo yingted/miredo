@@ -163,10 +163,9 @@ AC_SUBST(LIBCAP)
 # Judy
 AC_ARG_WITH(Judy,
 	    [AS_HELP_STRING(--with-Judy,
-	    		    [use Judy dynamic arrays (default enabled)])],,
-	    [with_Judy=yes])
+			    [use Judy dynamic arrays (default auto)])])
 LIBJUDY=""
-AS_IF([test "${with_Judy}" != "no"], [
+AS_IF([test "x${with_Judy}" != "xno"], [
 	AC_CHECK_HEADERS([Judy.h], [
 		AC_CHECK_LIB(Judy, JudyHSIns, [
 			LIBJUDY="-lJudy"
@@ -175,10 +174,15 @@ AS_IF([test "${with_Judy}" != "no"], [
 		])
 	])
 	AS_IF([test "x${LIBJUDY}" = "x"], [
-		AC_MSG_WARN([If you don't care about scalability, re-run configure with '--without-Judy'.])
-		AC_MSG_ERROR([Required Judy dynamic arrays library missing.])
+		AS_IF([test "x${with_Judy}" != "x"], [
+			AC_MSG_ERROR([Judy dynamic arrays library missing.])
+		])
 	])
-
+])
+AS_IF([test "x${LIBJUDY}" = "x"], [
+	AC_CHECK_FUNC([tdestroy],, [
+		AC_MSG_ERROR([Required tdestroy() or Judy dynamic arrays.])
+	])
 ])
 AC_SUBST(LIBJUDY)
 
