@@ -345,10 +345,7 @@ teredo_peer *teredo_list_lookup (teredo_peerlist *restrict list,
 		{
 			JHSI (PValue, list->PJHSArray, (uint8_t *)addr, 16);
 			if (PValue == PJERR)
-			{
-				pthread_mutex_unlock (&list->lock);
-				return NULL;
-			}
+				goto error; /* out of memory */
 			pp = (teredo_listitem **)PValue;
 			p = *pp;
 		}
@@ -406,15 +403,10 @@ teredo_peer *teredo_list_lookup (teredo_peerlist *restrict list,
 		return &p->peer;
 	}
 
-	assert (p == NULL);
-
 	/* otherwise, peer was not in list */
+	assert (p == NULL);
 	if (create == NULL)
-	{
-		pthread_mutex_unlock (&list->lock);
-		return NULL;
-	}
-
+		goto error; /* not found and not created */
 	*create = true;
 
 	/* Allocates a new peer entry */
@@ -427,8 +419,7 @@ teredo_peer *teredo_list_lookup (teredo_peerlist *restrict list,
 		int Rc_int;
 		JHSD (Rc_int, list->PJHSArray, (uint8_t *)addr, sizeof (*addr));
 #endif
-		pthread_mutex_unlock (&list->lock);
-		return NULL;
+		goto error; /* out of memory */
 	}
 
 	/* Puts new entry at the head of the list */
@@ -450,6 +441,10 @@ teredo_peer *teredo_list_lookup (teredo_peerlist *restrict list,
 #endif
 	p->key.ip6 = *addr;
 	return &p->peer;
+
+error:
+	pthread_mutex_unlock (&list->lock);
+	return NULL;
 }
 
 
