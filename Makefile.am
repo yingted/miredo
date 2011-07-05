@@ -18,7 +18,7 @@
 # ***********************************************************************
 
 ACLOCAL_AMFLAGS = -I m4
-AUTOMAKE_OPTIONS = \
+AUTOMAKE_OPTIONS = 1.11 \
 	-Wall \
 	check-news \
 	std-options \
