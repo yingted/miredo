@@ -253,16 +253,16 @@ init_security (const char *username)
 	unpriv_uid = pw->pw_uid;
 
 	/* Ensure we have root privilege before initialization */
-	if (seteuid (0))
+	if (seteuid (0)
+	/* Unpriviledged group */
+	 || setgid (pw->pw_gid)
+	 || initgroups (username, pw->pw_gid))
 	{
 		fprintf (stderr, _("SetUID to root: %s\n"), strerror (errno));
 		setuid_notice ();
 		return -1;
 	}
 
-	/* Unpriviledged group */
-	(void)setgid (pw->pw_gid);
-	(void)initgroups (username, pw->pw_gid);
 #else
 	(void)username;
 #endif /* MIREDO_DEFAULT_USERNAME */
