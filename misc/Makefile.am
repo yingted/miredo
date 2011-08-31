@@ -45,3 +45,14 @@ client-hook: client-hook.$(hook_suffix)
 		> client-hook.tmp
 	$(AM_V_at)mv -f -- client-hook.tmp client-hook
 
+# systemd service
+systemddir = /lib/systemd/system
+dist_noinst_DATA += miredo.service-in
+systemd_DATA = miredo.service
+
+.service-in.service:
+	$(AM_V_at)rm -f -- $@
+	$(sed_verbose)sed \
+		-e 's,@sbindir\@,$(sbindir),g' \
+		-e 's,@sysconfdir\@,$(sysconfdir),g' \
+		< $< > $@
