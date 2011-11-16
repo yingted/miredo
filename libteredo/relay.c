@@ -656,7 +656,8 @@ teredo_run_inner (teredo_tunnel *restrict tunnel,
 		 *
 		 * Only Linux defines s6_addr16, so we don't use it.
 		 */
-		if (ntohs ((ip6->ip6_src.s6_addr16[0]) & 0xffc0) == 0xfe80)
+		if (((ip6->ip6_src.s6_addr[0] & 0xff) == 0xfe) &&
+		    ((ip6->ip6_src.s6_addr[1] & 0xc0) == 0x80))
 			return;
 	}
 	else
