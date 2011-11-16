@@ -30,12 +30,15 @@
 #include <inttypes.h>
 #include <stdlib.h> // malloc()
 #include <string.h> // mem???()
+#include <assert.h>
 
+#include <sys/types.h>
 #include <netinet/in.h> // struct in6_addr
 #include <netinet/ip6.h> // struct ip6_hdr (for packets.h)
 #include <arpa/inet.h> // inet_ntop()
 #include <pthread.h>
 #include <ifaddrs.h> // getifaddrs()
+#include <sys/socket.h>
 #include <net/if.h> // IFF_MULTICAST
 
 #include "teredo.h"
