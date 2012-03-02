@@ -217,7 +217,7 @@ create_dynamic_tunnel (const char *ifname, int *pfd)
 	char ifindex[2 * sizeof (unsigned) + 1];
 	snprintf (ifindex, sizeof (ifindex), "%X", tun6_getId (tunnel));
 
-	static const char path[] = PKGLIBDIR"/miredo-privproc";
+	static const char path[] = PKGLIBEXECDIR"/miredo-privproc";
 	switch (fork ())
 	{
 		case -1:
