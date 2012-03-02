@@ -66,6 +66,9 @@ install-data-hook:
 	@echo "Please take time to review the settings and adjust them"
 	@echo "if necessary. Once finished, save the file as:"
 	@echo "  $(conf) and run miredo (as root)."
+
+uninstall-hook:
+	rm -f -- "$(DESTDIR)$(conf)"
 endif
 
 DISTCLEANFILES = ChangeLog
