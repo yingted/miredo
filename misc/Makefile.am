@@ -18,6 +18,7 @@
 # ***********************************************************************
 
 confdir = $(sysconfdir)/miredo
+systemddir = $(libdir)/systemd/system
 
 MOSTLYCLEANFILES = $(examples_DATA) $(conf_SCRIPTS)
 
@@ -46,7 +47,6 @@ client-hook: client-hook.$(hook_suffix)
 	$(AM_V_at)mv -f -- client-hook.tmp client-hook
 
 # systemd service
-systemddir = /lib/systemd/system
 dist_noinst_DATA += miredo.service-in
 systemd_DATA = miredo.service
 
