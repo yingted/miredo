@@ -20,7 +20,7 @@
 confdir = $(sysconfdir)/miredo
 systemddir = $(libdir)/systemd/system
 
-MOSTLYCLEANFILES = $(examples_DATA) $(conf_SCRIPTS)
+MOSTLYCLEANFILES = $(examples_DATA) $(conf_SCRIPTS) $(systemd_DATA)
 
 sed_verbose = $(sed_verbose_$(V))
 sed_verbose_ = $(sed_verbose_$(AM_DEFAULT_VERBOSITY))
