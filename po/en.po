@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: miredo 1.2.4\n"
 "Report-Msgid-Bugs-To: miredo-devel_no_bulk_mail@remlab.net\n"
-"POT-Creation-Date: 2011-07-05 21:13+0300\n"
+"POT-Creation-Date: 2012-03-02 19:22+0200\n"
 "PO-Revision-Date: 2009-04-13 11:36+0200\n"
 "Last-Translator: Rémi Denis-Courmont <remi (at) remlab (dot) net>\n"
 "Language-Team: N/A\n"
@@ -32,7 +32,7 @@ msgid ""
 msgstr ""
 
 #: libteredo/server.c:555 libteredo/server.c:565 libteredo/maintain.c:466
-#: libtun6/tun6.c:620 libtun6/tun6.c:660 src/miredo.c:70 src/miredo.c:77
+#: libtun6/tun6.c:629 libtun6/tun6.c:669 src/miredo.c:70 src/miredo.c:77
 #: src/miredo.c:155
 #, c-format
 msgid "Error (%s): %m"
@@ -71,18 +71,18 @@ msgstr ""
 msgid "New Teredo address/MTU"
 msgstr ""
 
-#: libtun6/tun6.c:181 libtun6/tun6.c:190 libtun6/tun6.c:232 libtun6/tun6.c:251
-#: libtun6/tun6.c:265 libtun6/tun6.c:279 libtun6/tun6.c:293 libtun6/tun6.c:315
+#: libtun6/tun6.c:187 libtun6/tun6.c:196 libtun6/tun6.c:241 libtun6/tun6.c:260
+#: libtun6/tun6.c:274 libtun6/tun6.c:288 libtun6/tun6.c:302 libtun6/tun6.c:324
 #, c-format
 msgid "Tunneling driver error (%s): %m"
 msgstr ""
 
-#: libtun6/tun6.c:193 src/main.c:507
+#: libtun6/tun6.c:199 src/main.c:507
 msgid ""
 "Please make sure another instance of the program is not already running."
 msgstr ""
 
-#: libtun6/tun6.c:337
+#: libtun6/tun6.c:346
 #, c-format
 msgid "%s tunneling interface creation failure"
 msgstr ""
@@ -232,7 +232,7 @@ msgid ""
 "(all the more as it has never been externally audited).\n"
 msgstr ""
 
-#: src/main.c:258
+#: src/main.c:261
 #, c-format
 msgid "SetUID to root: %s\n"
 msgstr ""
