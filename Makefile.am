@@ -22,7 +22,7 @@ AUTOMAKE_OPTIONS = 1.11 \
 	-Wall \
 	check-news \
 	std-options \
-	dist-bzip2 \
+	dist-xz \
 	no-dist-gzip \
 	no-exeext
 
