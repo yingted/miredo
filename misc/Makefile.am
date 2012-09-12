@@ -18,8 +18,9 @@
 # ***********************************************************************
 
 confdir = $(sysconfdir)/miredo
+systemddir = $(libdir)/systemd/system
 
-MOSTLYCLEANFILES = $(examples_DATA) $(conf_SCRIPTS)
+MOSTLYCLEANFILES = $(examples_DATA) $(conf_SCRIPTS) $(systemd_DATA)
 
 sed_verbose = $(sed_verbose_$(V))
 sed_verbose_ = $(sed_verbose_$(AM_DEFAULT_VERBOSITY))
@@ -45,3 +46,13 @@ client-hook: client-hook.$(hook_suffix)
 		> client-hook.tmp
 	$(AM_V_at)mv -f -- client-hook.tmp client-hook
 
+# systemd service
+dist_noinst_DATA += miredo.service-in
+systemd_DATA = miredo.service
+
+.service-in.service:
+	$(AM_V_at)rm -f -- $@
+	$(sed_verbose)sed \
+		-e 's,@sbindir\@,$(sbindir),g' \
+		-e 's,@sysconfdir\@,$(sysconfdir),g' \
+		< $< > $@

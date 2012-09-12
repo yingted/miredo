@@ -138,8 +138,8 @@ SendRA (const teredo_server *restrict s, const struct teredo_packet *p,
 	ra.pi.nd_opt_pi_valid_time = 0xffffffff;
 	ra.pi.nd_opt_pi_preferred_time = 0xffffffff;
 	addr = &ra.pi.nd_opt_pi_prefix;
-	addr->s6_addr32[0] = s->prefix;
-	addr->s6_addr32[1] = s->server_ip;
+	memcpy (&addr->s6_addr[0], &s->prefix, sizeof (s->prefix));
+	memcpy (&addr->s6_addr[4], &s->server_ip, sizeof (s->server_ip));
 	//memset (addr->ip6.s6_addr + 8, 0, 8);
 
 	// ICMPv6 option : MTU

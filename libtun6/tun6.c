@@ -89,6 +89,12 @@ typedef struct
 const char os_driver[] = "BSD";
 # define USE_BSD 1
 
+// Auto-loading
+# ifdef HAVE_KLDLOAD
+#  include <sys/param.h>
+#  include <sys/linker.h>
+# endif
+
 // TUNSIFHEAD or TUNSLMODE
 # if defined (HAVE_NET_IF_TUN_H)
 #  include <net/if_tun.h>
@@ -199,6 +205,9 @@ tun6 *tun6_create (const char *req_name)
 	if (id == 0)
 		goto error;
 #elif defined (USE_BSD)
+# ifdef HAVE_KLDLOAD
+	kldload ("if_tun");
+# endif
 	/*
 	 * BSD tunnel driver initialization
 	 * (see BSD src/sys/net/if_tun.{c,h})

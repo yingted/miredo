@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <string.h>
 #include <signal.h>
 #include <limits.h>
 
@@ -44,7 +45,10 @@ static void make_address (struct in6_addr *addr)
 	unsigned i;
 
 	for (i = 0; i < 16; i += sizeof (int))
-		*((int *)(addr->s6_addr + i)) = rand ();
+	{
+		int v = rand ();
+		memcpy (addr->s6_addr + i, &v, sizeof (v));
+	}
 }
 
 

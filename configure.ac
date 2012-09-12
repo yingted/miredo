@@ -21,7 +21,7 @@ dnl *  http://www.gnu.org/copyleft/gpl.html                               *
 dnl ***********************************************************************
 
 AC_COPYRIGHT([Copyright (C) 2004-2011 Remi Denis-Courmont])
-AC_INIT(miredo, 1.2.4, miredo-devel_no_bulk_mail@remlab.net)
+AC_INIT(miredo, 1.2.5, miredo-devel_no_bulk_mail@remlab.net)
 AC_PREREQ(2.59c)
 INVOCATION="$0 $ac_configure_args"
 
@@ -141,7 +141,7 @@ AS_MESSAGE([checking library functions...])
 RDC_REPLACE_FUNC_GETOPT_LONG
 LIBS_save="$LIBS"
 LIBS="$LIBRT $LIBS"
-AC_CHECK_FUNCS([devname_r pthread_condattr_setclock timer_create])
+AC_CHECK_FUNCS([devname_r kldload pthread_condattr_setclock timer_create])
 AC_REPLACE_FUNCS([clearenv closefrom strlcpy clock_gettime clock_nanosleep fdatasync])
 LIBS="$LIBS_save"
 
