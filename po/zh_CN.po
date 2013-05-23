@@ -1,0 +1,445 @@
+# Miredo (simplified Han) Chinese translation.
+# Copyright (C) 2013 Marguerite Su
+# This file is distributed under the same license as the miredo package.
+#
+# marguerite <i@marguerite.su>, 2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: miredo 1.2.5\n"
+"Report-Msgid-Bugs-To: miredo-devel_no_bulk_mail@remlab.net\n"
+"POT-Creation-Date: 2012-03-02 19:22+0200\n"
+"PO-Revision-Date: 2013-05-15 23:39+0800\n"
+"Last-Translator: marguerite <i@marguerite.su>\n"
+"Language-Team: Chinese Simplified <opensuse-zh@opensuse.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 1.5\n"
+
+#: libteredo/server.c:461
+#, c-format
+msgid "Raw IPv6 socket not working: %s"
+msgstr "裸 IPv6 套接字不工作：%s"
+
+#: libteredo/server.c:515
+#, c-format
+msgid "Raw IPv6 socket not working: %m"
+msgstr "裸 IPv6 套接字不工作：%m"
+
+#: libteredo/server.c:522
+msgid ""
+"Teredo server UDP socket error: Server IPv4 addresses must be global unicast."
+msgstr "Teredo 服务器 UDP 套接字出错：服务器 IPv4 地址必须是全局单播的。"
+
+#: libteredo/server.c:555 libteredo/server.c:565 libteredo/maintain.c:466
+#: libtun6/tun6.c:629 libtun6/tun6.c:669 src/miredo.c:70 src/miredo.c:77
+#: src/miredo.c:155
+#, c-format
+msgid "Error (%s): %m"
+msgstr "错误 (%s)：%m"
+
+#: libteredo/packets.c:218
+msgid "Multiple Teredo prefixes received"
+msgstr "接收到了多个 Teredo 前缀"
+
+#: libteredo/maintain.c:144
+msgid "Authentication with server failed."
+msgstr "与服务器认证失败。"
+
+#: libteredo/maintain.c:209
+msgid "Too much time drift. Resynchronizing."
+msgstr "时间漂移太多，重新同步中。"
+
+#: libteredo/maintain.c:273
+#, c-format
+msgid "Cannot resolve Teredo server address \"%s\": %s"
+msgstr "无法解析 Teredo 服务器地址 \"%s\"：%s"
+
+#: libteredo/maintain.c:280
+msgid "Teredo server has a non global IPv4 address."
+msgstr "Teredo 服务器的 IPv4 地址非全局地址。"
+
+#: libteredo/maintain.c:343
+msgid "No reply from Teredo server"
+msgstr "Teredo 服务器无响应"
+
+#: libteredo/maintain.c:349
+msgid "Lost Teredo connectivity"
+msgstr "Teredo 连接丢失"
+
+#: libteredo/maintain.c:379
+msgid "New Teredo address/MTU"
+msgstr "新 Teredo 地址/MTU"
+
+#: libtun6/tun6.c:187 libtun6/tun6.c:196 libtun6/tun6.c:241 libtun6/tun6.c:260
+#: libtun6/tun6.c:274 libtun6/tun6.c:288 libtun6/tun6.c:302 libtun6/tun6.c:324
+#, c-format
+msgid "Tunneling driver error (%s): %m"
+msgstr "隧道驱动出错 (%s)：%m"
+
+#: libtun6/tun6.c:199 src/main.c:507
+msgid ""
+"Please make sure another instance of the program is not already running."
+msgstr "请确保没有其它正在运行的本程序实例。"
+
+#: libtun6/tun6.c:346
+#, c-format
+msgid "%s tunneling interface creation failure"
+msgstr "%s 隧道接口创建失败"
+
+#: libtun6/diag.c:83 libtun6/diag.c:131
+#, c-format
+msgid ""
+"Error: %s character device not found or unavailable.\n"
+"%s"
+msgstr ""
+"错误：%s 字符设备未找到或不可用。\n"
+"%s"
+
+#: libtun6/diag.c:85
+msgid ""
+"You might try to run this command to load it:\n"
+"$ modprobe tun\n"
+"(you must be root to do that).\n"
+msgstr ""
+"您或许可以尝试运行此命令来加载它：\n"
+"$ modprobe tun\n"
+"(必须以 root 权限运行)。\n"
+
+#: libtun6/diag.c:92
+#, c-format
+msgid ""
+"Error: your operating system does not seem to provide a network tunneling\n"
+"device driver, which is required.\n"
+"%s"
+msgstr ""
+"错误：您的操作系统似乎未提供一个必须的网络隧道设备驱动。\n"
+"%s"
+
+#: libtun6/diag.c:95
+msgid ""
+"Make sure your Linux kernel includes the \"Universal TUNTAP driver\"\n"
+"(CONFIG_TUN option), possibly as a module.\n"
+msgstr ""
+"请确保您的 Linux 内核包含了「统一 TUNTAP 驱动」\n"
+"(CONFIG_TUN 选项)，它可能被编译为了一个内核模块。\n"
+
+#: libtun6/diag.c:119
+msgid ""
+"You can obtain a tunnel driver for the Darwin kernel (Mac OS X) from:\n"
+"http://www-user.rhrk.uni-kl.de/~nissler/tuntap/\n"
+msgstr ""
+"您可以撷取 Darwin 内核 (Mac OS X) 的隧道驱动于：\n"
+"http://www-user.rhrk.uni-kl.de/~nissler/tuntap/\n"
+
+#: libtun6/diag.c:123
+msgid ""
+"You might try to run this command to load it:\n"
+"$ kldload if_tun\n"
+"(you must be root to do that).\n"
+msgstr ""
+"您或许可以尝试运行此命令来加载它：\n"
+"$ kldload if_tun\n"
+"(必须以 root 权限运行)。\n"
+
+#: libtun6/diag.c:144
+#, c-format
+msgid ""
+"Error: cannot open device file %s (%s)\n"
+"IPv6 tunneling will not work.\n"
+msgstr ""
+"错误：无法打开设备文件 %s (%s)\n"
+"IPv6 隧道将无法工作。\n"
+
+#: src/main.c:66
+#, c-format
+msgid "Try \"%s -h | more\" for more information.\n"
+msgstr "尝试 \"%s -h | more\" 获取更多信息。\n"
+
+#: src/main.c:76
+#, c-format
+msgid ""
+"Usage: %s [OPTIONS] [SERVER_NAME]\n"
+"Creates a Teredo tunneling interface for encapsulation of IPv6 over UDP.\n"
+"\n"
+"  -c, --config     specify an configuration file\n"
+"  -f, --foreground run in the foreground\n"
+"  -h, --help       display this help and exit\n"
+"  -p, --pidfile    override the location of the PID file\n"
+"  -u, --user       override the user to set UID to\n"
+"  -V, --version    display program version and exit\n"
+msgstr ""
+"用法：%s [选项] [服务器名]\n"
+"创建一个 Teredo 隧道接口以将 IPv6 通过 UDP 封装。\n"
+"\n"
+" -c, --config    指定一个配置文件\n"
+" -f, --foreground 在前台运行\n"
+" -h, --help    显示此帮助并退出\n"
+" -p, --pidfile    覆盖进程编号文件的位置\n"
+" -u, --user    覆盖要设置用户编号的用户名\n"
+" -V, --version    显示程序版本并退出\n"
+
+#: src/main.c:95
+#, c-format
+msgid ""
+"Miredo: Teredo IPv6 tunneling software %s (%s)\n"
+" built %s on %s (%s)\n"
+msgstr ""
+"Miredo: Teredo IPv6 隧道软件 %s (%s)\n"
+" 编译 %s 于 %s (%s)\n"
+
+#: src/main.c:99
+#, c-format
+msgid "Configured with: %s\n"
+msgstr "配置为：%s\n"
+
+#: src/main.c:100
+msgid "Written by Remi Denis-Courmont.\n"
+msgstr "作者 Remi Denis-Courmont。\n"
+
+#: src/main.c:102
+#, c-format
+msgid ""
+"Copyright (C) 2004-%u Remi Denis-Courmont\n"
+"This is free software; see the source for copying conditions.\n"
+"There is NO warranty; not even for MERCHANTABILITY or\n"
+"FITNESS FOR A PARTICULAR PURPOSE.\n"
+msgstr ""
+"版权所有 (C) 2004-%u Remi Denis-Courmont\n"
+"这是一个自由软件; 参考源文件获知版权条件。\n"
+"完全无保证; 甚至不保证适销性或特殊目的的实用性。\n"
+
+#: src/main.c:114
+#, c-format
+msgid ""
+"Duplicate parameter \"%s\" for option -%c\n"
+"would override previous value \"%s\".\n"
+msgstr ""
+"多余的参数 \"%s\" 用于选项 -%c\n"
+"将覆盖之前的值 \"%s\"。\n"
+
+#: src/main.c:126
+#, c-format
+msgid "Invalid number (or capacity exceeded) \"%s\" for option -%c\n"
+msgstr "无效数字 (或溢出) \"%s\" 用于选项 -%c\n"
+
+#: src/main.c:135
+#, c-format
+msgid "%s: unexpected extra parameter\n"
+msgstr "%s：未预期的额外参数\n"
+
+#: src/main.c:143 src/main.c:480
+#, c-format
+msgid "Error (%s): %s\n"
+msgstr "错误 (%s)：%s\n"
+
+#: src/main.c:195
+msgid ""
+"That is usually an indication that you are trying to start\n"
+"the program as an user with insufficient system privileges.\n"
+"This program should normally be started by root.\n"
+msgstr ""
+"这通常预示着您正尝试以一个没有足够系统特权的用户启动该程序。\n"
+"此程序正常情况下应由 root 启动。\n"
+
+#: src/main.c:240
+#, c-format
+msgid "User \"%s\": %s\n"
+msgstr "用户 \"%s\"：%s\n"
+
+#: src/main.c:241
+msgid "User not found"
+msgstr "用户未找到"
+
+#: src/main.c:247
+msgid ""
+"Error: This program is not supposed to keep root\n"
+"privileges. That is potentially very dangerous\n"
+"(all the more as it has never been externally audited).\n"
+msgstr ""
+"错误：此程序不应保留 root 特权。\n"
+"这可能是非常危险的\n"
+"(因为它从来未经外界审计过)。\n"
+
+#: src/main.c:261
+#, c-format
+msgid "SetUID to root: %s\n"
+msgstr "SetUID 到 root：%s\n"
+
+#: src/main.c:428
+#, c-format
+msgid "Reading configuration from %s: %s\n"
+msgstr "从 %s 读取配置：%s\n"
+
+#: src/main.c:503
+#, c-format
+msgid ""
+"Cannot create PID file %s:\n"
+" %s\n"
+msgstr ""
+"无法创建进程编号文件 %s：\n"
+" %s\n"
+
+#: src/miredo.c:139
+#, c-format
+msgid "Loading configuration from %s failed"
+msgstr "从 %s 加载配置失败"
+
+#: src/miredo.c:147
+msgid "Starting..."
+msgstr "启动中..."
+
+#: src/miredo.c:182
+#, c-format
+msgid "Exiting on signal %d (%s)"
+msgstr "收到信号 %d，退出中 (%s)"
+
+#: src/miredo.c:190
+#, c-format
+msgid "Reloading configuration on signal %d (%s)"
+msgstr "收到信号 %d，重加载配置中 (%s)"
+
+#: src/miredo.c:208
+#, c-format
+msgid "Child %d exited (code: %d)"
+msgstr "子进程 %d 已退出 (代码：%d）"
+
+#: src/miredo.c:217
+#, c-format
+msgid "Child %d killed by signal %d (%s)"
+msgstr "子进程 %d 被信号 %d 杀死 (%s)"
+
+#: src/miredo.c:228
+msgid "Terminated with error(s)."
+msgstr "有错终止。"
+
+#: src/miredo.c:229
+msgid "Terminated with no error."
+msgstr "无错终止。"
+
+#: src/relayd.c:182
+#, c-format
+msgid ""
+"Using deprecated \"restricted\" relay type which is STRONGLY DISCOURAGED (at "
+"line %u)."
+msgstr "正在使用非常不鼓励的老式的 \"restricted\" 中继类型 (于行 %u)。"
+
+#: src/relayd.c:192 src/checkconf.c:81
+#, c-format
+msgid "Invalid relay type \"%s\" at line %u"
+msgstr "无效的中继类型 \"%s\" 于行 %u"
+
+#: src/relayd.c:232
+#, c-format
+msgid "Could not execute %s: %m"
+msgstr "无法执行 %s：%m"
+
+#: src/relayd.c:288
+msgid "Teredo pseudo-tunnel started"
+msgstr "Teredo 虚假隧道已启动"
+
+#: src/relayd.c:290
+#, c-format
+msgid " (address: %s, MTU: %<PRIu16>)"
+msgstr " (地址：%s，MTU：%<PRIu16>)"
+
+#: src/relayd.c:309
+msgid "Teredo pseudo-tunnel stopped"
+msgstr "Teredo 虚假隧道已停止"
+
+#: src/relayd.c:450 src/relayd.c:470 src/relayd.c:487 src/relayd.c:501
+#: src/relayd.c:525 src/serverd.c:94 src/serverd.c:102 src/serverd.c:120
+#: src/checkconf.c:149
+msgid "Fatal configuration error"
+msgstr "致命的配置错误"
+
+#: src/relayd.c:469 src/serverd.c:101 src/checkconf.c:103
+msgid "Server address not specified"
+msgstr "服务器地址未指定"
+
+#: src/relayd.c:486 src/checkconf.c:107
+msgid "Unsupported Teredo client mode"
+msgstr "不支持的 Teredo 客户端模式"
+
+#: src/relayd.c:552 src/relayd.c:558 src/relayd.c:585
+#, c-format
+msgid "Miredo setup failure: %s"
+msgstr "Miredo 设置失败：%s"
+
+#: src/relayd.c:553
+msgid "Cannot create IPv6 tunnel"
+msgstr "无法创建 IPv6 隧道"
+
+#: src/relayd.c:559 src/relayd.c:586
+msgid "libteredo cannot be initialized"
+msgstr "libteredo 无法初始化"
+
+#: src/serverd.c:84
+#, c-format
+msgid "Invalid server hostname \"%s\": %s"
+msgstr "无效的服务器主机名 \"%s\"：%s"
+
+#: src/serverd.c:157
+msgid "Teredo server fatal error"
+msgstr "Teredo 服务器致命错误"
+
+#: src/serverd.c:158
+msgid "Make sure another instance of the program is not already running."
+msgstr "请确保没有其它正在运行的本程序实例。"
+
+#: src/conf.c:140
+#, c-format
+msgid "Superfluous directive %s at line %u"
+msgstr "多余的指令 %s 于行 %u"
+
+#: src/conf.c:196
+#, c-format
+msgid "Error (%s): %s"
+msgstr "错误 (%s)：%s"
+
+#: src/conf.c:249
+#, c-format
+msgid "Skipped overly long line %u"
+msgstr "跳过超长行 %u"
+
+#: src/conf.c:266
+#, c-format
+msgid "Ignoring line %u: %s"
+msgstr "忽略行 %u：%s"
+
+#: src/conf.c:274
+#, c-format
+msgid "Error reading configuration file: %s"
+msgstr "读取配置文件出错：%s"
+
+#: src/conf.c:298
+#, c-format
+msgid "Error opening configuration file %s: %s"
+msgstr "打开配置文件 %s 出错：%s"
+
+#: src/conf.c:326
+#, c-format
+msgid "Invalid integer value \"%s\" for %s: %s"
+msgstr "无效的整数值 \"%s\" 用于 %s：%s"
+
+#: src/conf.c:382
+#, c-format
+msgid "Invalid boolean value \"%s\" for %s"
+msgstr "无效的布尔值 \"%s\" 用于 %s"
+
+#: src/conf.c:425 src/conf.c:456
+#, c-format
+msgid "Invalid hostname \"%s\" at line %u: %s"
+msgstr "无效的主机名 \"%s\" 于行 %u：%s"
+
+#: src/conf.c:482
+#, c-format
+msgid "Invalid Teredo IPv6 prefix: %x::/32"
+msgstr "无效的 Teredo IPv6 前缀：%x::/32"
+
+#: src/conf.c:566
+#, c-format
+msgid "Unknown syslog facility \"%s\" at line %u"
+msgstr "未知 syslog 设施 \"%s\" 于行 %u"
