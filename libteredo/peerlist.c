@@ -50,6 +50,9 @@
 #include "debug.h"
 #include "clock.h"
 #include "peerlist.h"
+#ifdef ANDROID
+# include "pthread_cancel.h"
+#endif
 
 /*
  * Packets queueing

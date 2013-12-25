@@ -232,6 +232,20 @@ AC_ARG_ENABLE(sample-conf,
 AM_CONDITIONAL(CONF_SAMPLE, [test "${enable_sample_conf}" != "no"])
 
 
+# Android
+AC_MSG_CHECKING([Android build])
+AC_ARG_ENABLE(android,
+	[AS_HELP_STRING(--enable-android,
+		[build for Android])],,
+	[enable_android="yes"])
+AM_CONDITIONAL(ANDROID, [test "${enable_android}" = "yes"])
+AS_IF([test "${enable_android}" = "yes"], [
+	AC_DEFINE(ANDROID, 1,
+		[Define to 1 if building for Android.])
+])
+AC_MSG_RESULT([${enable_android}])
+
+
 # Unprivileged user
 AC_MSG_CHECKING([user to run as])
 AC_ARG_ENABLE(miredo-user,

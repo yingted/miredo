@@ -51,6 +51,18 @@
 # include <getopt.h>
 #endif
 
+#ifdef ANDROID
+# include <libteredo/pthread_cancel.h>
+
+# define F_LOCK LOCK_EX
+# define F_ULOCK LOCK_UN
+# define F_TLOCK (F_LOCK|LOCK_NB)
+# include <unistd.h>
+static inline int lockf(int fd, int cmd, off_t ignored_len) {
+	return flock(fd, cmd);
+}
+#endif
+
 #include "miredo.h"
 
 /*
@@ -322,6 +334,9 @@ static void init_locale (void)
 
 int miredo_main (int argc, char *argv[])
 {
+#ifdef ANDROID
+	pthread_cancel_register_handler ();
+#endif
 	const char *username = NULL, *conffile = NULL, *servername = NULL,
 	           *pidfile = NULL, *chrootdir = NULL;
 	struct

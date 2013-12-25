@@ -25,14 +25,23 @@ AM_CPPFLAGS = -I@top_srcdir@/include -I@top_srcdir@ \
 	-D_REENTRANT -DLOCALEDIR=\"$(localedir)\"
 
 LIBADD = ../compat/libcompat.la libteredo-common.la
+if ANDROID
+LIBADD += libpthread_cancel.la
+endif
 
 noinst_LTLIBRARIES = libteredo-common.la libteredo-server.la
-lib_LTLIBRARIES = libteredo.la
+lib_LTLIBRARIES =
+
 bin_PROGRAMS = teredo-mire
 EXTRA_DIST = libteredo.sym
 
 include_libteredodir = $(includedir)/libteredo
 include_libteredo_HEADERS = teredo.h teredo-udp.h tunnel.h
+
+if ANDROID
+lib_LTLIBRARIES += libpthread_cancel.la
+libpthread_cancel_la_SOURCES = pthread_cancel.c pthread_cancel.h
+endif
 
 # libteredo-common.la
 libteredo_common_la_SOURCES =	teredo.c v4global.c v4global.h \
@@ -40,9 +49,13 @@ libteredo_common_la_SOURCES =	teredo.c v4global.c v4global.h \
 libteredo_common_la_LDFLAGS = -no-undefined
 
 # libteredo.la
+lib_LTLIBRARIES += libteredo.la
 libteredo_la_SOURCES =	init.c relay.c security.c security.h md5.c md5.h \
 			packets.c packets.h peerlist.c peerlist.h \
 			clock.c clock.h iothread.c iothread.h stub.c
+if ANDROID
+libteredo_la_SOURCES += android-ifaddrs/ifaddrs.c android-ifaddrs/ifaddrs.h
+endif
 if TEREDO_CLIENT
 libteredo_la_SOURCES += maintain.c maintain.h discovery.c discovery.h
 endif

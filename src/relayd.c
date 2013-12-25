@@ -43,6 +43,31 @@
 #include <netinet/in.h>
 #include <netinet/ip6.h>
 #include <netinet/icmp6.h>
+#ifdef ANDROID
+# define ICMP6_FILTER 1
+
+# undef ICMP6_FILTER_SETPASSALL
+# define ICMP6_FILTER_SETPASSALL(filterp) \
+        (void)memset(filterp, 0x00, sizeof(struct icmp6_filter))
+# undef ICMP6_FILTER_SETBLOCKALL
+# define ICMP6_FILTER_SETBLOCKALL(filterp) \
+        (void)memset(filterp, 0xff, sizeof(struct icmp6_filter))
+# undef ICMP6_FILTER_SETPASS
+# define ICMP6_FILTER_SETPASS(type, filterp) \
+        (((filterp)->icmp6_filt[(type) >> 5]) &= ~(1 << ((type) & 31)))
+# undef ICMP6_FILTER_SETBLOCK
+# define ICMP6_FILTER_SETBLOCK(type, filterp) \
+        (((filterp)->icmp6_filt[(type) >> 5]) |= (1 << ((type) & 31)))
+# undef ICMP6_FILTER_WILLPASS
+# define ICMP6_FILTER_WILLPASS(type, filterp) \
+        ((((filterp)->icmp6_filt[(type) >> 5]) & (1 << ((type) & 31))) == 0)
+# undef ICMP6_FILTER_WILLBLOCK
+# define ICMP6_FILTER_WILLBLOCK(type, filterp) \
+        ((((filterp)->icmp6_filt[(type) >> 5]) & (1 << ((type) & 31))) != 0)
+
+# include <libteredo/pthread_cancel.h>
+#endif
+
 #include <arpa/inet.h> // inet_ntop()
 #include <netdb.h> // NI_MAXHOST
 #ifdef HAVE_SYS_CAPABILITY_H

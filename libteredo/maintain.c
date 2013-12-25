@@ -45,6 +45,9 @@
 #include <stdlib.h> /* malloc(), free() */
 #include <errno.h> /* EINTR */
 #include <pthread.h>
+#ifdef ANDROID
+# include "pthread_cancel.h"
+#endif
 #include <arpa/nameser.h>
 #include <resolv.h> /* res_init() */
 
@@ -59,7 +62,7 @@
 
 static inline void gettime (struct timespec *now)
 {
-#if (_POSIX_CLOCK_SELECTION - 0 >= 0) && (_POSIX_MONOTONIC_CLOCK - 0 >= 0)
+#if (_POSIX_CLOCK_SELECTION - 0 >= 0) && (_POSIX_MONOTONIC_CLOCK - 0 >= 0) || defined ANDROID
 	if (clock_gettime (CLOCK_MONOTONIC, now) == 0)
 		return;
 #else
@@ -165,7 +168,11 @@ static int wait_reply (teredo_maintenance *restrict m,
 {
 	while (m->incoming == NULL)
 	{
+#ifdef ANDROID
+		switch (pthread_cond_timedwait_monotonic (&m->received, &m->inner, deadline))
+#else
 		switch (pthread_cond_timedwait (&m->received, &m->inner, deadline))
+#endif
 		{
 			case 0:
 				break;
@@ -447,8 +454,10 @@ teredo_maintenance_start (int fd, teredo_state_cb cb, void *opaque,
 		pthread_condattr_t attr;
 
 		pthread_condattr_init (&attr);
+#ifndef ANDROID
 		(void)pthread_condattr_setclock (&attr, CLOCK_MONOTONIC);
 		/* EINVAL: CLOCK_MONOTONIC unknown */
+#endif
 
 		pthread_cond_init (&m->received, &attr);
 		pthread_condattr_destroy (&attr);

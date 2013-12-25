@@ -56,6 +56,12 @@
 #  define LIBTUN6_PURE
 # endif
 
+#ifdef ANDROID
+# define DEV_NET_TUN "/dev/tun"
+#else
+# define DEV_NET_TUN "/dev/net/tun"
+#endif
+
 struct in6_addr;
 
 typedef struct tun6 tun6;

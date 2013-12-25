@@ -37,7 +37,11 @@
 #include <netinet/ip6.h> // struct ip6_hdr (for packets.h)
 #include <arpa/inet.h> // inet_ntop()
 #include <pthread.h>
+#ifdef ANDROID
+#include "android-ifaddrs/ifaddrs.h"
+#else
 #include <ifaddrs.h> // getifaddrs()
+#endif
 #include <sys/socket.h>
 #include <net/if.h> // IFF_MULTICAST
 

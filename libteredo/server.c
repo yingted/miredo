@@ -44,6 +44,9 @@
 #include <netinet/icmp6.h>
 #include <fcntl.h>
 #include <pthread.h>
+#ifdef ANDROID
+# include "pthread_cancel.h"
+#endif
 #include <syslog.h>
 
 #include "server.h"

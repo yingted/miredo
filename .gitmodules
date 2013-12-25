@@ -1,0 +1,3 @@
+[submodule "libteredo/android-ifaddrs"]
+	path = libteredo/android-ifaddrs
+	url = https://github.com/kmackay/android-ifaddrs.git

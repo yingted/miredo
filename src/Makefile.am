@@ -43,6 +43,9 @@ libmiredo_la_SOURCES = main.c miredo.c miredo.h \
 			conf.c conf.h binreloc.c binreloc.h
 libmiredo_la_LIBADD = $(LTLIBINTL) $(LIBCAP) $(BINRELOC_LIBS) \
 			../compat/libcompat.la
+if ANDROID
+libmiredo_la_LIBADD += ../libteredo/libpthread_cancel.la
+endif
 libmiredo_la_LDFLAGS = -no-undefined -static
 #libmiredo_la_LDFLAGS = -no-undefined -release @VERSION@
 # libmiredo is dynamic only to reduce executables size (all the code is
@@ -54,10 +57,16 @@ libmiredo_la_LDFLAGS = -no-undefined -static
 miredo_SOURCES = relayd.c
 miredo_LDADD = ../libtun6/libtun6.la ../libteredo/libteredo.la libmiredo.la \
 		@LIBRT@ $(LIBINTL)
+if ANDROID
+miredo_LDFLAGS = -all-static
+endif
 
 # privproc
 miredo_privproc_SOURCES = privproc.c privproc.h
 miredo_privproc_LDADD = ../libteredo/libteredo.la $(LIBCAP)
+if ANDROID
+miredo_privproc_LDFLAGS = -all-static
+endif
 if TEREDO_CLIENT
 pkglibexec_PROGRAMS += miredo-privproc
 TESTS += miredo-checkconf

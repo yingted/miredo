@@ -65,7 +65,7 @@ int tun6_driver_diagnose (char *errbuf)
 	(void)close (fd);
 
 #if defined (__linux__)
-	const char tundev[] = "/dev/net/tun";
+	const char tundev[] = DEV_NET_TUN;
 
 	fd = open (tundev, O_RDWR);
 	if (fd != -1)

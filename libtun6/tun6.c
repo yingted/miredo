@@ -58,13 +58,27 @@ const char os_driver[] = "Linux";
  * <linux/ipv6.h> conflicts with <netinet/in.h> and <arpa/inet.h>,
  * so we've got to declare this structure by hand.
  */
+#ifndef ANDROID
 struct in6_ifreq {
 	struct in6_addr ifr6_addr;
 	uint32_t ifr6_prefixlen;
 	int ifr6_ifindex;
 };
+#endif
 
 # include <net/route.h> // struct in6_rtmsg
+struct in6_rtmsg {
+	struct in6_addr rtmsg_dst;
+	struct in6_addr rtmsg_src;
+	struct in6_addr rtmsg_gateway;
+	__u32 rtmsg_type;
+	__u16 rtmsg_dst_len;
+	__u16 rtmsg_src_len;
+	__u32 rtmsg_metric;
+	unsigned long rtmsg_info;
+	__u32 rtmsg_flags;
+	int rtmsg_ifindex;
+};
 # include <netinet/if_ether.h> // ETH_P_IPV6
 
 typedef struct
@@ -169,7 +183,7 @@ tun6 *tun6_create (const char *req_name)
 	/*
 	 * TUNTAP (Linux) tunnel driver initialization
 	 */
-	static const char tundev[] = "/dev/net/tun";
+	static const char tundev[] = DEV_NET_TUN;
 	struct ifreq req =
 	{
 		.ifr_flags = IFF_TUN
