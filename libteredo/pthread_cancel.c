@@ -19,6 +19,10 @@ static void pthread_cancel_handler (int sig)
 // must run before pthread_create
 bool pthread_cancel_register_handler (void)
 {
+	assert (!size_thread);
+	thread = malloc((size_thread = 4) * sizeof (*thread));
+	cancel = malloc( size_thread      * sizeof (*cancel));
+
 	struct sigaction actions;
 	memset (&actions, 0, sizeof (actions)); 
 	sigemptyset (&actions.sa_mask);
@@ -31,18 +35,13 @@ bool pthread_cancel_register_handler (void)
 static int pthread_cancel_getid (pthread_t thd, bool add)
 {
 	// assume locked
+	assert (size_thread);
 	for (size_t i = 0; i < nr_thread; i++)
 		if (pthread_equal(thd, thread[i]))
 			return i;
 
 	if (!add)
 		return -1;
-
-	if (size_thread == 0)
-	{
-		thread = realloc(thread, (size_thread = 4) * sizeof (*thread));
-		cancel = realloc(cancel,  size_thread      * sizeof (*cancel));
-	}
 
 	if (nr_thread == size_thread)
 	{
