@@ -58,14 +58,14 @@ miredo_SOURCES = relayd.c
 miredo_LDADD = ../libtun6/libtun6.la ../libteredo/libteredo.la libmiredo.la \
 		@LIBRT@ $(LIBINTL)
 if ANDROID
-miredo_LDFLAGS = -all-static
+miredo_LDFLAGS = -static -all-static
 endif
 
 # privproc
 miredo_privproc_SOURCES = privproc.c privproc.h
 miredo_privproc_LDADD = ../libteredo/libteredo.la $(LIBCAP)
 if ANDROID
-miredo_privproc_LDFLAGS = -all-static
+miredo_privproc_LDFLAGS = -static -all-static
 endif
 if TEREDO_CLIENT
 pkglibexec_PROGRAMS += miredo-privproc
