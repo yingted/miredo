@@ -72,7 +72,7 @@ drop_privileges (void)
 	}
 
 	// Definitely drops privileges
-#ifndef ANDROID
+#ifdef ANDROID
 	setegid (3003); // AID_INET
 #endif
 	if (setuid (unpriv_uid))
