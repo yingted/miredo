@@ -74,12 +74,14 @@ static int run_script (void)
 
 		case 0:
 		{
-			sigset_t emptyset;
+			sigset_t emptyset, oldset;
 			sigemptyset (&emptyset);
-			pthread_sigmask (SIG_SETMASK, &emptyset, NULL);
+			pthread_sigmask (SIG_SETMASK, &emptyset, &oldset);
 
 			if (dup2 (2, 0) == 0 && dup2 (2, 1) == 1)
 				execl (script_path, script_path, (char *)NULL);
+
+			pthread_sigmask (SIG_SETMASK, &oldset, NULL);
 
 			syslog (LOG_ERR, "Could not execute %s: %m",
 			        script_path);
