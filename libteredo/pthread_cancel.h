@@ -20,9 +20,9 @@ enum
 #ifndef PTHREAD_CANCELED
 # define PTHREAD_CANCELED ((void *) -1)
 #endif
+#define PTHREAD_CANCEL_SIGCANCEL SIGUSR1
 
 bool pthread_cancel_register_handler (void);
-// const static extern bool pthread_cancel_handler_registered;
 int pthread_setcancelstate (int state, int *oldstate);
 int pthread_cancel (pthread_t thread);
 void pthread_testcancel (void);

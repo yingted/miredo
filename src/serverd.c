@@ -35,6 +35,9 @@
 #include <syslog.h>
 #include <signal.h> // sigemptyset()
 #include <pthread.h> // pthread_sigmask()
+#ifdef ANDROID
+# include <libteredo/pthread_cancel.h>
+#endif
 #include <netdb.h> // gai_strerror()
 #include <unistd.h> // for broken libc which don't know about sys/select.h
 #ifdef HAVE_SYS_CAPABILITY_H
@@ -141,6 +144,9 @@ server_run (miredo_conf *conf, const char *server_name)
 			/* changes nothing, only gets the current mask */
 			sigemptyset (&dummyset);
 			pthread_sigmask (SIG_BLOCK, &dummyset, &set);
+#ifdef ANDROID
+			sigdelset (&set, PTHREAD_CANCEL_SIGCANCEL);
+#endif
 
 			/* wait for fatal signal */
 			while (sigwait (&set, &dummy) != 0);

@@ -522,6 +522,9 @@ run_tunnel (miredo_tunnel *tunnel)
 	sigset_t dummyset, set;
 	sigemptyset (&dummyset);
 	pthread_sigmask (SIG_BLOCK, &dummyset, &set);
+#ifdef ANDROID
+	sigdelset (&set, PTHREAD_CANCEL_SIGCANCEL);
+#endif
 	while (sigwait (&set, &(int){ 0 }));
 
 	pthread_cancel (encap_th);

@@ -83,7 +83,7 @@ bool pthread_cancel_register_handler (void)
 	sigemptyset (&actions.sa_mask);
 	actions.sa_flags = 0; 
 	actions.sa_handler = pthread_cancel_handler;
-	sigaction (SIGUSR1, &actions, NULL);
+	sigaction (PTHREAD_CANCEL_SIGCANCEL, &actions, NULL);
 	return true;
 }
 
@@ -144,7 +144,7 @@ int pthread_setcancelstate (int state, int *oldstate)
 		{
 			sigset_t cancelset;
 			sigemptyset (&cancelset);
-			sigaddset (&cancelset, SIGUSR1);
+			sigaddset (&cancelset, PTHREAD_CANCEL_SIGCANCEL);
 			pthread_sigmask (state == PTHREAD_CANCEL_ENABLE ? SIG_UNBLOCK : SIG_BLOCK, &cancelset, NULL);
 		}
 
@@ -168,7 +168,7 @@ int pthread_cancel (pthread_t thd)
 
 	pthread_mutex_unlock (&thread_mutex);
 	if (new_cancel)
-		pthread_kill (thd, SIGUSR1);
+		pthread_kill (thd, PTHREAD_CANCEL_SIGCANCEL);
 	return 0;
 }
 
