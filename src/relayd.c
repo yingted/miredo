@@ -66,6 +66,7 @@
         ((((filterp)->icmp6_filt[(type) >> 5]) & (1 << ((type) & 31))) != 0)
 
 # include <libteredo/pthread_cancel.h>
+# include "get_current_dir_name.h"
 #endif
 
 #include <arpa/inet.h> // inet_ntop()
@@ -91,6 +92,7 @@
 #include "privproc.h"
 #include "miredo.h"
 #include "conf.h"
+#include "main.h"
 
 static void miredo_setup_fd (int fd);
 static void miredo_setup_nonblock_fd (int fd);
@@ -305,7 +307,19 @@ create_dynamic_tunnel (const char *ifname, int *pfd)
 	char ifindex[2 * sizeof (unsigned) + 1];
 	snprintf (ifindex, sizeof (ifindex), "%X", tun6_getId (tunnel));
 
+#ifdef ANDROID
+	{
+		char oldpwd[strlen(miredo_cwd) + sizeof ("OLDPWD=")];
+		snprintf (oldpwd, sizeof (oldpwd), "OLDPWD=%s", miredo_cwd);
+		if (putenv (oldpwd))
+			goto error;
+	}
+	{ // scope for path: imagine the switch indented 1 more level
+		char path[strlen(miredo_cwd) + sizeof ("/miredo-privproc")];
+		snprintf (path, sizeof (path), "%s/miredo-privproc", miredo_cwd);
+#else
 	static const char path[] = PKGLIBEXECDIR"/miredo-privproc";
+#endif
 	switch (vfork ())
 	{
 		case -1:
@@ -320,6 +334,9 @@ create_dynamic_tunnel (const char *ifname, int *pfd)
 			syslog (LOG_ERR, _("Could not execute %s: %m"), path);
 			exit (1);
 	}
+#ifdef ANDROID
+	}
+#endif
 	close (fd[0]);
 	*pfd = fd[1];
 	return tunnel;

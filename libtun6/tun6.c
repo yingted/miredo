@@ -164,7 +164,9 @@ struct tun6
  */
 tun6 *tun6_create (const char *req_name)
 {
+#ifndef ANDROID
 	(void)bindtextdomain (PACKAGE_NAME, LOCALEDIR);
+#endif
 	tun6 *t = (tun6 *)malloc (sizeof (*t));
 	if (t == NULL)
 		return NULL;

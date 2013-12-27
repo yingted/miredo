@@ -52,7 +52,9 @@ extern const char os_driver[];
  */
 int tun6_driver_diagnose (char *errbuf)
 {
+#ifndef ANDROID
 	(void)bindtextdomain (PACKAGE_NAME, LOCALEDIR);
+#endif
 
 	int fd = socket (AF_INET6, SOCK_DGRAM, 0);
 	if (fd == -1)

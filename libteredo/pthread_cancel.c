@@ -1,5 +1,4 @@
 #include "pthread_cancel.h"
-#undef NDEBUG
 #include <sys/types.h>
 #include <sys/syscall.h>
 #include <unistd.h>

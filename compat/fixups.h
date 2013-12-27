@@ -25,8 +25,13 @@
 
 #define MIREDO_COMPAT_FIXUPS_H 1
 
+#ifdef ANDROID
+#define _( str )		(str)
+#define N_( str )		str
+#else
 #define _( str )		dgettext (PACKAGE_NAME, str)
 #define N_( str )		gettext_noop (str)
+#endif
 
 #ifdef __cplusplus
 # define EXTERN extern "C"

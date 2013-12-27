@@ -53,6 +53,7 @@
 
 #ifdef ANDROID
 # include <libteredo/pthread_cancel.h>
+# include "get_current_dir_name.h"
 
 # define F_LOCK LOCK_EX
 # define F_ULOCK LOCK_UN
@@ -64,6 +65,7 @@ static inline int lockf(int fd, int cmd, off_t ignored_len) {
 #endif
 
 #include "miredo.h"
+#include "main.h"
 
 /*
  * RETURN VALUES:
@@ -323,19 +325,32 @@ init_security (const char *username)
 
 static void init_locale (void)
 {
+#ifndef ANDROID
 	(void)br_init (NULL);
 	(void)setlocale (LC_ALL, "");
 	char *path = br_find_locale_dir (LOCALEDIR);
 	(void)bindtextdomain (PACKAGE, path);
 	free (path);
 	(void)textdomain (PACKAGE);
+#endif
 }
 
-
+char *miredo_cwd;
 int miredo_main (int argc, char *argv[])
 {
 #ifdef ANDROID
 	pthread_cancel_register_handler ();
+	{
+		int cwd_len = PATH_MAX;
+		for (;; cwd_len <<= 1)
+		{
+			if (!(miredo_cwd = malloc (cwd_len)))
+				return error_errno ("getcwd");
+			if (getcwd (miredo_cwd, cwd_len))
+				break;
+			free (miredo_cwd);
+		}
+	}
 #endif
 	const char *username = NULL, *conffile = NULL, *servername = NULL,
 	           *pidfile = NULL, *chrootdir = NULL;
@@ -423,15 +438,24 @@ int miredo_main (int argc, char *argv[])
 	char *path = NULL;
 	if (conffile == NULL)
 	{
+#ifdef ANDROID
+		str_len = strlen (miredo_cwd) + strlen (miredo_name)
+		                        + sizeof ("/.conf");
+#else
 		path = br_find_etc_dir (SYSCONFDIR);
 		str_len = strlen (path) + strlen (miredo_name)
 		                        + sizeof ("/miredo/.conf");
+#endif
 	}
 
 	char conffile_buf[str_len];
 	if (conffile == NULL)
 	{
+#ifdef ANDROID
+		snprintf (conffile_buf, str_len, "%s/%s.conf", miredo_cwd,
+#else
 		snprintf (conffile_buf, str_len, "%s/miredo/%s.conf", path,
+#endif
 		          miredo_name);
 		free (path);
 		conffile = conffile_buf;
@@ -463,14 +487,22 @@ int miredo_main (int argc, char *argv[])
 	miredo_chrootdir = chrootdir;
 
 	if (pidfile == NULL)
+#ifdef ANDROID
+		str_len = strlen (miredo_cwd) + sizeof ("/.pid") + strlen (miredo_name);
+#else
 		str_len = sizeof (LOCALSTATEDIR"/run/" ".pid") + strlen (miredo_name);
+#endif
 	else
 		str_len = 0;
 
 	char pidfile_buf[str_len];
 	if (pidfile == NULL)
 	{
+#ifdef ANDROID
+		snprintf (pidfile_buf, str_len, "%s/%s.pid", miredo_cwd,
+#else
 		snprintf (pidfile_buf, str_len, LOCALSTATEDIR"/run/%s.pid",
+#endif
 		          miredo_name);
 		pidfile = pidfile_buf;
 	}

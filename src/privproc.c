@@ -57,7 +57,9 @@
 #include "miredo.h"
 #include "privproc.h"
 
+#ifdef ANDROID
 static const char script_path[] = SYSCONFDIR"/miredo/client-hook";
+#endif
 
 /**
  * Runs the hook script.
@@ -65,6 +67,14 @@ static const char script_path[] = SYSCONFDIR"/miredo/client-hook";
  */
 static int run_script (void)
 {
+#ifdef ANDROID
+	char *cwd = getenv ("OLDPWD");
+	if (!cwd)
+		return -1;
+	char script_path[strlen (cwd) + sizeof ("/client-hook")];
+	snprintf (script_path, sizeof (script_path), "%s/client-hook", cwd);
+	free (cwd);
+#endif
 	pid_t pid = fork ();
 
 	switch (pid)
