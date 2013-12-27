@@ -53,7 +53,6 @@
 
 #ifdef ANDROID
 # include <libteredo/pthread_cancel.h>
-# include "get_current_dir_name.h"
 
 # define F_LOCK LOCK_EX
 # define F_ULOCK LOCK_UN

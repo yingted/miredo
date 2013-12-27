@@ -35,23 +35,16 @@ sbin_PROGRAMS = miredo miredo-server miredo-checkconf
 pkglibexec_PROGRAMS =
 EXTRA_PROGRAMS = privproc
 noinst_LTLIBRARIES = libmiredo.la
-if ANDROID
-noinst_LTLIBRARIES += libget_current_dir_name.la
-endif
 TESTS =
 
 #BUILT_SOURCES = $(srcdir)/svnversion.stamp
-
-if ANDROID
-libget_current_dir_name_la_SOURCES = get_current_dir_name.c get_current_dir_name.h
-endif
 
 libmiredo_la_SOURCES = main.c miredo.c miredo.h \
 			conf.c conf.h binreloc.c binreloc.h
 libmiredo_la_LIBADD = $(LTLIBINTL) $(LIBCAP) $(BINRELOC_LIBS) \
 			../compat/libcompat.la
 if ANDROID
-libmiredo_la_LIBADD += ../libteredo/libpthread_cancel.la libget_current_dir_name.la
+libmiredo_la_LIBADD += ../libteredo/libpthread_cancel.la
 endif
 libmiredo_la_LDFLAGS = -no-undefined -static
 #libmiredo_la_LDFLAGS = -no-undefined -release @VERSION@
@@ -72,7 +65,6 @@ endif
 miredo_privproc_SOURCES = privproc.c privproc.h
 miredo_privproc_LDADD = ../libteredo/libteredo.la $(LIBCAP)
 if ANDROID
-miredo_privproc_LDADD += libget_current_dir_name.la
 miredo_privproc_LDFLAGS = -static
 endif
 if TEREDO_CLIENT

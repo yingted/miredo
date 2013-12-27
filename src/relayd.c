@@ -66,7 +66,6 @@
         ((((filterp)->icmp6_filt[(type) >> 5]) & (1 << ((type) & 31))) != 0)
 
 # include <libteredo/pthread_cancel.h>
-# include "get_current_dir_name.h"
 #endif
 
 #include <arpa/inet.h> // inet_ntop()
