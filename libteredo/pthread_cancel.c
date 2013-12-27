@@ -91,7 +91,7 @@ static int pthread_cancel_find (pid_t tid, bool add)
 	return nr_thread++;
 }
 
-static void pthread_cancel_remove (int id)
+inline extern void pthread_cancel_remove (int id)
 {
 	thread[id] = thread[--nr_thread];
 }
