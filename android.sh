@@ -21,7 +21,7 @@ then
 	JUDY_LIBS="-L$JUDY_SRC/obj/.libs"
 fi
 export PATH=$NDK/bin:"$PATH"
-rm -rf build miredo.zip
+rm -rf build miredo.zip package
 mkdir -p build
 #[ -f Makefile ] ||
 	CFLAGS="-s \
