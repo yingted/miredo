@@ -22,9 +22,25 @@ enum
 #endif
 #define PTHREAD_CANCEL_SIGCANCEL SIGUSR1
 
-bool pthread_cancel_register_handler (void);
+/**
+ * Registers the signal handler for pthread_cancel.
+ */
+void pthread_cancel_register_handler (void);
+
+/**
+ * See pthread_setcancelstate(3)
+ * Although not required by POSIX, this is a cancellation point
+ */
 int pthread_setcancelstate (int state, int *oldstate);
+
+/**
+ * Simulate pthread_cancel(3) by sending a signal to the thread.
+ */
 int pthread_cancel (pthread_t thread);
+
+/**
+ * See pthread_testcancel(3)
+ */
 void pthread_testcancel (void);
 
 # ifdef __cplusplus

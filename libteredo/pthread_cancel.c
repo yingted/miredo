@@ -55,7 +55,7 @@ static void pthread_cancel_handler (int sig)
 }
 
 // must run before pthread_create
-bool pthread_cancel_register_handler (void)
+void pthread_cancel_register_handler (void)
 {
 	assert (!size_thread);
 	thread = malloc((size_thread = 4) * sizeof (*thread));
@@ -66,7 +66,6 @@ bool pthread_cancel_register_handler (void)
 	actions.sa_flags = 0; 
 	actions.sa_handler = pthread_cancel_handler;
 	sigaction (PTHREAD_CANCEL_SIGCANCEL, &actions, NULL);
-	return true;
 }
 
 static int pthread_cancel_find (pid_t tid, bool add)
