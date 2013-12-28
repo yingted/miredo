@@ -316,10 +316,11 @@ create_dynamic_tunnel (const char *ifname, int *pfd)
 	{ // scope for path: imagine the switch indented 1 more level
 		char path[strlen(miredo_cwd) + sizeof ("/miredo-privproc")];
 		snprintf (path, sizeof (path), "%s/miredo-privproc", miredo_cwd);
+	switch (vfork ())
 #else
 	static const char path[] = PKGLIBEXECDIR"/miredo-privproc";
+	switch (fork ())
 #endif
-	switch (vfork ())
 	{
 		case -1:
 			close (fd[0]);
