@@ -51,7 +51,9 @@
 #include "maintain.h"
 #include "clock.h"
 #include "peerlist.h"
-#include "pthread_cancel.h" // android
+#ifdef ANDROID
+# include "pthread_cancel.h"
+#endif
 #include "iothread.h"
 #ifdef MIREDO_TEREDO_CLIENT
 # include "security.h"

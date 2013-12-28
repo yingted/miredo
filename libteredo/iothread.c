@@ -28,7 +28,9 @@
 #include <assert.h>
 #include <inttypes.h>
 #include <pthread.h>
-#include "pthread_cancel.h" // android
+#ifdef ANDROID
+# include "pthread_cancel.h"
+#endif
 
 #include "iothread.h"
 #include "teredo-udp.h" // teredo_close()

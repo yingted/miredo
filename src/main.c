@@ -334,6 +334,7 @@ static void init_locale (void)
 #endif
 }
 
+
 char *miredo_cwd;
 int miredo_main (int argc, char *argv[])
 {
