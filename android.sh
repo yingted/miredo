@@ -55,10 +55,7 @@ set -x
 killall miredo
 killall -9 miredo miredo-privproc
 cd /system || exit 1
-until rm -rf miredo
-do
-	umount /home/ted/miredo/build/miredo
-done
+rm -rf miredo
 set -e
 unzip -o /sdcard/miredo
 cd miredo
