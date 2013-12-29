@@ -332,7 +332,7 @@ create_dynamic_tunnel (const char *ifname, int *pfd)
 				execl (path, path, ifindex, (char *)NULL);
 
 			syslog (LOG_ERR, _("Could not execute %s: %m"), path);
-			exit (1);
+			_exit (1);
 	}
 #ifdef ANDROID
 	}
