@@ -41,12 +41,15 @@ mkdir -p package/miredo
 	cd package
 	(
 		cd miredo
-		cp ../../build/{sbin/miredo,libexec/miredo/miredo-privproc,etc/miredo/{client-hook,miredo.conf}} .
+		cp ../../build/{sbin/miredo,libexec/miredo/miredo-privproc,etc/miredo/client-hook} .
+		awk -v x="$(grep '^[^#]' ../../build/etc/miredo/miredo.conf | sed -e "s/'/'\\''/g" -e 's/^\(ServerAddress \).*/\1'\''"$relay\"'\''/')" '{gsub("=====CONFIG=====",x);print}' ../../android-mkshrc.sh > mkshrc
 		sed -e '1s:/s\?bin/:/system&:' \
 			-e 's:/sbin/ip:/system/bin/ip:g' \
+			-e '2,${/^#/d}' \
+			-e '/^$/d' \
 			-i client-hook
+		zip -r ../../miredo.zip * # exclude leading miredo/
 	)
-	zip -r ../miredo.zip miredo
 )
 exit
 adb push miredo.zip /sdcard/miredo.zip
