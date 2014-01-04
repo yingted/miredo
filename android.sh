@@ -6,7 +6,7 @@ set -ex
 shopt -s nullglob
 [ ! -f include/gettext.h ] || echo '#define gettext 
 #define bindtextdomain ' > include/gettext.h
-: ${NDK:=~/bin/arm-linux-androideabi-17}
+: ${NDK:=~/bin/arm-linux-androideabi-9}
 if [ -z "$JUDY_SRC" ]
 then
 	for JUDY_SRC in ../judy*/src
