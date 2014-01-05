@@ -47,7 +47,6 @@ miredo(){
 	cd miredo
 # ignore race on $miredo pid reuse
 	trap 'kill "$miredo" "$read" 2>/dev/null; exit 143' TERM
-	maxfd="$(ulimit -n)"
 # mksh doesn't use this fd
 	exec 3<&0
 	(read -u3; kill "$$" 2>/dev/null) & read="$!"
